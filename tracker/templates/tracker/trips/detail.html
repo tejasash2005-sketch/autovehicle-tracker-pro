@@ -1,0 +1,42 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Trip #{{ trip.id }}{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-route me-2 text-primary"></i>Trip #{{ trip.id }}</h1></div>
+  <a href="{% url 'trip_list' %}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Back</a>
+</div>
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card"><div class="card-header"><i class="fas fa-info-circle me-2"></i>Trip Details</div>
+    <div class="card-body">
+      <table class="table table-sm">
+        <tr><td style="color:#666;font-size:12.5px;">Status</td><td><span class="badge bg-{{ trip.status_color }}{% if trip.status == 'scheduled' %} text-dark{% endif %}">{{ trip.get_status_display }}</span></td></tr>
+        <tr><td style="color:#666;font-size:12.5px;">Vehicle</td><td><strong>{{ trip.vehicle.vehicle_number }} — {{ trip.vehicle.name }}</strong></td></tr>
+        <tr><td style="color:#666;font-size:12.5px;">Driver</td><td><strong>{{ trip.driver.get_full_name|default:"Not Assigned" }}</strong></td></tr>
+        <tr><td style="color:#666;font-size:12.5px;">From</td><td><strong>{{ trip.start_location }}</strong></td></tr>
+        <tr><td style="color:#666;font-size:12.5px;">To</td><td><strong>{{ trip.end_location }}</strong></td></tr>
+        <tr><td style="color:#666;font-size:12.5px;">Scheduled</td><td><strong>{{ trip.scheduled_start|date:"d M Y H:i" }}</strong></td></tr>
+        {% if trip.actual_start %}<tr><td style="color:#666;font-size:12.5px;">Started</td><td><strong>{{ trip.actual_start|date:"d M Y H:i" }}</strong></td></tr>{% endif %}
+        {% if trip.actual_end %}<tr><td style="color:#666;font-size:12.5px;">Ended</td><td><strong>{{ trip.actual_end|date:"d M Y H:i" }}</strong></td></tr>{% endif %}
+        {% if trip.distance_km %}<tr><td style="color:#666;font-size:12.5px;">Distance</td><td><strong>{{ trip.distance_km }} km</strong></td></tr>{% endif %}
+        {% if trip.fuel_consumed %}<tr><td style="color:#666;font-size:12.5px;">Fuel Used</td><td><strong>{{ trip.fuel_consumed }} L</strong></td></tr>{% endif %}
+        {% if trip.purpose %}<tr><td style="color:#666;font-size:12.5px;">Purpose</td><td><strong>{{ trip.purpose }}</strong></td></tr>{% endif %}
+        {% if trip.notes %}<tr><td style="color:#666;font-size:12.5px;">Notes</td><td>{{ trip.notes }}</td></tr>{% endif %}
+      </table>
+    </div></div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card"><div class="card-header"><i class="fas fa-map me-2"></i>Route</div>
+    <div class="card-body" style="padding:0;">
+      <div style="height:280px;background:linear-gradient(135deg,#E3F2FD,#E8F5E9);display:flex;align-items:center;justify-content:center;border-radius:0 0 12px 12px;">
+        <div class="text-center">
+          <i class="fas fa-map-pin fa-2x text-primary mb-3 d-block"></i>
+          <div style="font-weight:700;font-size:15px;">{{ trip.start_location }}</div>
+          <i class="fas fa-arrow-down my-2 d-block text-primary"></i>
+          <div style="font-weight:700;font-size:15px;">{{ trip.end_location }}</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

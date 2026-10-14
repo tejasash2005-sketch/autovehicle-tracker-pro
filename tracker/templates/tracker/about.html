@@ -1,0 +1,44 @@
+{% extends 'tracker/base.html' %}
+{% block title %}About Us{% endblock %}
+{% block public_content %}
+<section style="background:linear-gradient(135deg,#0D47A1,#1565C0);padding:120px 0 60px;text-align:center;">
+  <div class="container">
+    <h1 style="font-family:'Poppins',sans-serif;font-size:44px;font-weight:800;color:#fff;">About AutoVehicle Tracker</h1>
+    <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:580px;margin:12px auto 0;">India's most trusted fleet management and GPS tracking platform.</p>
+  </div>
+</section>
+<section style="padding:70px 0;background:#fff;">
+  <div class="container">
+    <div class="row align-items-center g-5 mb-5 pb-5" style="border-bottom:1px solid #eee;">
+      <div class="col-lg-6">
+        <h2 style="font-family:'Poppins',sans-serif;font-size:32px;font-weight:800;color:#1A1A2E;margin-bottom:16px;">Making Fleet Management Intelligent</h2>
+        <p style="color:#555;font-size:15.5px;line-height:1.8;">Founded in 2020, AutoVehicle Tracker has grown to serve over 5,000 businesses across 28 states, tracking more than 50,000 vehicles in real-time with sub-5-second GPS updates.</p>
+        <div class="row g-3 mt-3">
+          <div class="col-6"><div style="background:#F0F4F8;border-radius:10px;padding:18px;text-align:center;"><div style="font-size:28px;font-weight:800;color:#1565C0;">5,000+</div><div style="color:#666;font-size:12.5px;font-weight:600;">Businesses</div></div></div>
+          <div class="col-6"><div style="background:#F0F4F8;border-radius:10px;padding:18px;text-align:center;"><div style="font-size:28px;font-weight:800;color:#2E7D32;">50,000+</div><div style="color:#666;font-size:12.5px;font-weight:600;">Vehicles Tracked</div></div></div>
+          <div class="col-6"><div style="background:#F0F4F8;border-radius:10px;padding:18px;text-align:center;"><div style="font-size:28px;font-weight:800;color:#E65100;">28</div><div style="color:#666;font-size:12.5px;font-weight:600;">States Covered</div></div></div>
+          <div class="col-6"><div style="background:#F0F4F8;border-radius:10px;padding:18px;text-align:center;"><div style="font-size:28px;font-weight:800;color:#C62828;">99.9%</div><div style="color:#666;font-size:12.5px;font-weight:600;">Uptime SLA</div></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div style="background:linear-gradient(135deg,#E3F2FD,#E8F5E9);border-radius:18px;padding:40px;text-align:center;height:280px;display:flex;align-items:center;justify-content:center;">
+          <div><i class="fas fa-satellite-dish" style="font-size:72px;color:#1565C0;margin-bottom:16px;display:block;"></i>
+          <h5 style="font-weight:800;">Real-Time Intelligence</h5>
+          <p style="color:#555;font-size:13.5px;">5-second GPS updates, nationwide coverage.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4"><div style="padding:28px;border-left:4px solid #1565C0;"><i class="fas fa-shield-alt fa-2x text-primary mb-3 d-block"></i><h5 style="font-weight:800;">Security First</h5><p style="color:#666;font-size:13.5px;">End-to-end encrypted data. Your fleet data stays private.</p></div></div>
+      <div class="col-md-4"><div style="padding:28px;border-left:4px solid #2E7D32;"><i class="fas fa-bolt fa-2x text-success mb-3 d-block"></i><h5 style="font-weight:800;">Speed & Reliability</h5><p style="color:#666;font-size:13.5px;">99.9% uptime. Real-time updates with sub-5-second latency.</p></div></div>
+      <div class="col-md-4"><div style="padding:28px;border-left:4px solid #E65100;"><i class="fas fa-headset fa-2x mb-3 d-block" style="color:#E65100;"></i><h5 style="font-weight:800;">24/7 Support</h5><p style="color:#666;font-size:13.5px;">Round-the-clock support in Hindi, English and regional languages.</p></div></div>
+    </div>
+  </div>
+</section>
+<section style="background:linear-gradient(135deg,#0D47A1,#00ACC1);padding:60px 0;text-align:center;">
+  <div class="container">
+    <h2 style="font-family:'Poppins',sans-serif;font-size:34px;font-weight:800;color:#fff;margin-bottom:14px;">Join 5,000+ Businesses Tracking Smarter</h2>
+    <a href="{% url 'register' %}" style="background:#FF6F00;color:#fff;border:none;padding:13px 34px;font-size:15px;border-radius:10px;font-weight:800;text-decoration:none;display:inline-block;"><i class="fas fa-rocket me-2"></i>Get Started Free</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-shield-alt me-2 text-warning"></i>Admin Panel</h1>
+  <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0"><li class="breadcrumb-item active">Administration</li></ol></nav></div>
+  <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>User Dashboard</a>
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-xl-2 col-md-4"><a href="{% url 'admin_users' %}" class="text-decoration-none"><div class="stat-card" style="background:linear-gradient(135deg,#1565C0,#1976D2);">
+    <div class="si mb-2"><i class="fas fa-users"></i></div><div class="sn">{{ total_users }}</div><div class="sl">Total Users</div><i class="fas fa-users bg-ico"></i>
+  </div></a></div>
+  <div class="col-xl-2 col-md-4"><a href="{% url 'admin_vehicles' %}" class="text-decoration-none"><div class="stat-card" style="background:linear-gradient(135deg,#2E7D32,#388E3C);">
+    <div class="si mb-2"><i class="fas fa-car"></i></div><div class="sn">{{ total_vehicles }}</div><div class="sl">Vehicles</div><i class="fas fa-car bg-ico"></i>
+  </div></a></div>
+  <div class="col-xl-2 col-md-4"><a href="{% url 'admin_drivers' %}" class="text-decoration-none"><div class="stat-card" style="background:linear-gradient(135deg,#6A1B9A,#7B1FA2);">
+    <div class="si mb-2"><i class="fas fa-id-card"></i></div><div class="sn">{{ total_drivers }}</div><div class="sl">Drivers</div><i class="fas fa-id-card bg-ico"></i>
+  </div></a></div>
+  <div class="col-xl-2 col-md-4"><a href="{% url 'admin_trips' %}" class="text-decoration-none"><div class="stat-card" style="background:linear-gradient(135deg,#E65100,#F57C00);">
+    <div class="si mb-2"><i class="fas fa-route"></i></div><div class="sn">{{ total_trips }}</div><div class="sl">Total Trips</div><i class="fas fa-route bg-ico"></i>
+  </div></a></div>
+  <div class="col-xl-2 col-md-4"><a href="{% url 'admin_alerts' %}" class="text-decoration-none"><div class="stat-card" style="background:linear-gradient(135deg,#C62828,#D32F2F);">
+    <div class="si mb-2"><i class="fas fa-bell"></i></div><div class="sn">{{ unresolved_alerts }}</div><div class="sl">Active Alerts</div><i class="fas fa-bell bg-ico"></i>
+  </div></a></div>
+  <div class="col-xl-2 col-md-4"><a href="{% url 'admin_contacts' %}" class="text-decoration-none"><div class="stat-card" style="background:linear-gradient(135deg,#00838F,#00ACC1);">
+    <div class="si mb-2"><i class="fas fa-envelope"></i></div><div class="sn">{{ new_contacts }}</div><div class="sl">New Contacts</div><i class="fas fa-envelope bg-ico"></i>
+  </div></a></div>
+</div>
+<div class="card mb-3">
+  <div class="card-header"><i class="fas fa-bolt me-2 text-warning"></i>Quick Actions</div>
+  <div class="card-body">
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="{% url 'vehicle_create' %}"    class="btn btn-primary btn-sm"><i class="fas fa-car me-2"></i>Add Vehicle</a>
+      <a href="{% url 'admin_users' %}"        class="btn btn-info text-white btn-sm"><i class="fas fa-users me-2"></i>Manage Users</a>
+      <a href="{% url 'admin_alerts' %}"       class="btn btn-danger btn-sm"><i class="fas fa-bell me-2"></i>View Alerts</a>
+      <a href="{% url 'admin_maintenance' %}"  class="btn btn-warning btn-sm"><i class="fas fa-tools me-2"></i>Maintenance</a>
+      <a href="{% url 'admin_geofences' %}"    class="btn btn-success btn-sm"><i class="fas fa-draw-polygon me-2"></i>Geofences</a>
+      <a href="{% url 'admin_reports' %}"      class="btn btn-secondary btn-sm"><i class="fas fa-chart-bar me-2"></i>Reports</a>
+      <a href="{% url 'admin_fuel' %}"         class="btn btn-outline-primary btn-sm"><i class="fas fa-gas-pump me-2"></i>Fuel</a>
+      <a href="/django-admin/" class="btn btn-outline-dark btn-sm"><i class="fas fa-cog me-2"></i>Django Admin</a>
+    </div>
+  </div>
+</div>
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between"><span><i class="fas fa-users me-2"></i>Recent Users</span><a href="{% url 'admin_users' %}" class="btn btn-sm btn-outline-primary">View All</a></div>
+      <div class="card-body p-0">
+        <table class="table mb-0"><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead><tbody>
+        {% for u in recent_users %}<tr>
+          <td><strong>{{ u.username }}</strong></td>
+          <td style="font-size:13px;">{{ u.email }}</td>
+          <td>{% with p=u.userprofile %}<span class="badge bg-secondary">{{ p.role|capfirst }}</span>{% endwith %}</td>
+          <td style="font-size:12px;color:#666;">{{ u.date_joined|date:"d M Y" }}</td>
+        </tr>{% endfor %}
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between"><span><i class="fas fa-envelope me-2"></i>Recent Contacts</span><a href="{% url 'admin_contacts' %}" class="btn btn-sm btn-outline-primary">View All</a></div>
+      <div class="card-body p-0">
+        <table class="table mb-0"><thead><tr><th>Name</th><th>Subject</th><th>Status</th></tr></thead><tbody>
+        {% for c in recent_contacts %}<tr>
+          <td><strong>{{ c.name }}</strong></td>
+          <td style="font-size:13px;">{{ c.subject|truncatechars:28 }}</td>
+          <td>{% if c.is_replied %}<span class="badge bg-success">Replied</span>{% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}</td>
+        </tr>{% empty %}<tr><td colspan="3" class="text-center py-3 text-muted">No contacts yet</td></tr>{% endfor %}
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

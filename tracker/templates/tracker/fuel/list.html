@@ -1,0 +1,41 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Fuel Records{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-gas-pump me-2 text-primary"></i>Fuel Records</h1></div>
+  <a href="{% url 'fuel_create' %}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add Record</a>
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-md-4"><div class="stat-card" style="background:linear-gradient(135deg,#1565C0,#1976D2);">
+    <div class="d-flex justify-content-between"><div><div class="sl">Total Cost</div><div class="sn" style="font-size:24px;">&#8377;{{ total_cost|floatformat:0 }}</div></div><div class="si"><i class="fas fa-rupee-sign"></i></div></div><i class="fas fa-rupee-sign bg-ico"></i>
+  </div></div>
+  <div class="col-md-4"><div class="stat-card" style="background:linear-gradient(135deg,#2E7D32,#388E3C);">
+    <div class="d-flex justify-content-between"><div><div class="sl">Total Fuel</div><div class="sn" style="font-size:24px;">{{ total_qty|floatformat:0 }} L</div></div><div class="si"><i class="fas fa-gas-pump"></i></div></div><i class="fas fa-gas-pump bg-ico"></i>
+  </div></div>
+  <div class="col-md-4"><div class="stat-card" style="background:linear-gradient(135deg,#E65100,#F57C00);">
+    <div class="d-flex justify-content-between"><div><div class="sl">Records</div><div class="sn" style="font-size:24px;">{{ records.paginator.count }}</div></div><div class="si"><i class="fas fa-list"></i></div></div><i class="fas fa-list bg-ico"></i>
+  </div></div>
+</div>
+<div class="card"><div class="card-body p-0">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Date</th><th>Vehicle</th><th>Driver</th><th>Qty (L)</th><th>Cost (&#8377;)</th><th>Station</th><th>Mileage</th></tr></thead>
+      <tbody>
+      {% for r in records %}
+      <tr>
+        <td style="font-size:13px;">{{ r.date|date:"d M Y" }}</td>
+        <td><strong>{{ r.vehicle.vehicle_number }}</strong></td>
+        <td style="font-size:13px;">{{ r.driver.get_full_name|default:"—" }}</td>
+        <td><strong>{{ r.fuel_quantity }} L</strong></td>
+        <td><strong style="color:#2E7D32;">&#8377;{{ r.fuel_cost }}</strong></td>
+        <td style="font-size:13px;">{{ r.station_name|default:"—" }}</td>
+        <td style="font-size:13px;">{{ r.mileage_at_fill }} km</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="text-center py-4 text-muted">No fuel records</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div></div>
+{% endblock %}

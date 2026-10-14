@@ -1,0 +1,44 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Contact Messages{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-envelope me-2 text-primary"></i>Contact Messages</h1></div>
+  {% if unreplied > 0 %}<span class="badge bg-warning text-dark" style="font-size:13px;padding:9px 16px;"><i class="fas fa-exclamation-circle me-2"></i>{{ unreplied }} Pending</span>{% endif %}
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-md-4"><div class="stat-card" style="background:linear-gradient(135deg,#1565C0,#1976D2);">
+    <div class="d-flex justify-content-between"><div><div class="sl">Total Messages</div><div class="sn">{{ contacts.count }}</div></div><div class="si"><i class="fas fa-envelope"></i></div></div><i class="fas fa-envelope bg-ico"></i>
+  </div></div>
+  <div class="col-md-4"><div class="stat-card" style="background:linear-gradient(135deg,#F57F17,#F9A825);">
+    <div class="d-flex justify-content-between"><div><div class="sl">Pending Reply</div><div class="sn">{{ unreplied }}</div></div><div class="si"><i class="fas fa-clock"></i></div></div><i class="fas fa-clock bg-ico"></i>
+  </div></div>
+  <div class="col-md-4"><div class="stat-card" style="background:linear-gradient(135deg,#2E7D32,#388E3C);">
+    <div class="d-flex justify-content-between"><div><div class="sl">Replied</div><div class="sn">{{ contacts.count|add:0 }}</div></div><div class="si"><i class="fas fa-check-circle"></i></div></div><i class="fas fa-check-circle bg-ico"></i>
+  </div></div>
+</div>
+<div class="card"><div class="card-body p-0">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th><th>Received</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for c in contacts %}<tr style="{% if not c.is_replied %}background:#FFFDE7;{% endif %}">
+        <td><strong>{{ c.name }}</strong></td>
+        <td><a href="mailto:{{ c.email }}" style="color:#1565C0;font-size:13px;">{{ c.email }}</a></td>
+        <td style="font-weight:600;font-size:13px;">{{ c.subject|truncatechars:30 }}</td>
+        <td style="font-size:12px;color:#666;max-width:200px;">{{ c.message|truncatechars:60 }}</td>
+        <td>{% if c.is_replied %}<span class="badge bg-success">Replied</span>{% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}</td>
+        <td style="font-size:12px;color:#666;">{{ c.created_at|date:"d M Y H:i" }}</td>
+        <td>
+          <div class="d-flex gap-1">
+            <a href="mailto:{{ c.email }}?subject=Re: {{ c.subject }}" class="btn btn-sm btn-outline-primary" title="Reply"><i class="fas fa-reply"></i></a>
+            {% if not c.is_replied %}<a href="{% url 'admin_contact_reply' c.pk %}" class="btn btn-sm btn-outline-success" title="Mark Replied" onclick="return confirm('Mark as replied?')"><i class="fas fa-check"></i></a>{% endif %}
+          </div>
+        </td>
+      </tr>{% empty %}
+      <tr><td colspan="7" class="text-center py-5 text-muted"><i class="fas fa-envelope-open fa-3x mb-3 d-block"></i>No contact messages yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div></div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Register — AutoVehicle Tracker{% endblock %}
+{% block public_content %}
+<div style="min-height:100vh;background:linear-gradient(135deg,#0D47A1,#1565C0,#00ACC1);display:flex;align-items:center;justify-content:center;padding:80px 16px 40px;">
+  <div style="width:100%;max-width:540px;">
+    <div class="text-center mb-4">
+      <div style="width:58px;height:58px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px;color:#1565C0;">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <h2 style="color:#fff;font-weight:800;font-family:'Poppins',sans-serif;margin-bottom:4px;">Create Account</h2>
+      <p style="color:rgba(255,255,255,.8);">Join AutoVehicle Tracker Pro</p>
+    </div>
+    <div style="background:#fff;border-radius:18px;padding:36px;box-shadow:0 25px 60px rgba(0,0,0,.25);">
+      <form method="post">
+        {% csrf_token %}
+        <div class="row g-3">
+          <div class="col-6"><label class="form-label">First Name</label>{{ form.first_name }}</div>
+          <div class="col-6"><label class="form-label">Last Name</label>{{ form.last_name }}</div>
+          <div class="col-12"><label class="form-label">Username *</label>{{ form.username }}{% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>{% endif %}</div>
+          <div class="col-6"><label class="form-label">Email</label>{{ form.email }}</div>
+          <div class="col-6"><label class="form-label">Phone</label>{{ form.phone }}</div>
+          <div class="col-12"><label class="form-label">Role</label>{{ form.role }}</div>
+          <div class="col-6"><label class="form-label">Password</label>{{ form.password1 }}{% if form.password1.errors %}<div class="text-danger small mt-1">{{ form.password1.errors.0 }}</div>{% endif %}</div>
+          <div class="col-6"><label class="form-label">Confirm</label>{{ form.password2 }}{% if form.password2.errors %}<div class="text-danger small mt-1">{{ form.password2.errors.0 }}</div>{% endif %}</div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100 btn-lg" style="border-radius:10px;font-size:15px;padding:12px;">
+              <i class="fas fa-user-plus me-2"></i>Create My Account
+            </button>
+          </div>
+        </div>
+      </form>
+      <div class="text-center mt-4 pt-3" style="border-top:1px solid #eee;">
+        <span style="color:#666;">Already registered? <a href="{% url 'login' %}" style="color:#1565C0;font-weight:700;">Login</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

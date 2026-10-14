@@ -1,0 +1,5 @@
+Django>=4.2,<5.0
+Pillow>=10.0
+django-crispy-forms>=2.1
+crispy-bootstrap5>=0.7
+django-widget-tweaks>=1.5

@@ -1,0 +1,168 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="ph">
+  <div>
+    <h1><i class="fas fa-tachometer-alt me-2 text-primary"></i>Dashboard</h1>
+    <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0"><li class="breadcrumb-item active">Overview</li></ol></nav>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{% url 'live_tracking' %}" class="btn btn-primary btn-sm"><i class="fas fa-map-marker-alt me-1"></i>Live Map</a>
+    {% if is_admin_user %}<a href="{% url 'admin_dashboard' %}" class="btn btn-warning btn-sm"><i class="fas fa-shield-alt me-1"></i>Admin Panel</a>{% endif %}
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#1565C0,#1976D2);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">Total Vehicles</div><div class="sn">{{ total_vehicles }}</div><div style="font-size:12px;opacity:.8;margin-top:4px;"><i class="fas fa-car me-1"></i>All registered</div></div>
+        <div class="si"><i class="fas fa-car"></i></div>
+      </div>
+      <i class="fas fa-car bg-ico"></i>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#2E7D32,#388E3C);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">Active Now</div><div class="sn">{{ active_vehicles }}</div><div style="font-size:12px;opacity:.8;margin-top:4px;"><i class="fas fa-circle me-1"></i>Live on road</div></div>
+        <div class="si"><i class="fas fa-route"></i></div>
+      </div>
+      <i class="fas fa-route bg-ico"></i>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#E65100,#F57C00);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">Total Trips</div><div class="sn">{{ total_trips }}</div><div style="font-size:12px;opacity:.8;margin-top:4px;"><i class="fas fa-play me-1"></i>{{ ongoing_trips }} ongoing</div></div>
+        <div class="si"><i class="fas fa-map"></i></div>
+      </div>
+      <i class="fas fa-map bg-ico"></i>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#C62828,#D32F2F);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">Active Alerts</div><div class="sn">{{ unread_alerts }}</div><div style="font-size:12px;opacity:.8;margin-top:4px;"><i class="fas fa-exclamation-triangle me-1"></i>Unresolved</div></div>
+        <div class="si"><i class="fas fa-bell"></i></div>
+      </div>
+      <i class="fas fa-bell bg-ico"></i>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#6A1B9A,#7B1FA2);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">Total Drivers</div><div class="sn">{{ total_drivers }}</div></div>
+        <div class="si"><i class="fas fa-users"></i></div>
+      </div>
+      <i class="fas fa-users bg-ico"></i>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#00838F,#00ACC1);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">Idle Vehicles</div><div class="sn">{{ idle_vehicles }}</div></div>
+        <div class="si"><i class="fas fa-parking"></i></div>
+      </div>
+      <i class="fas fa-parking bg-ico"></i>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#BF360C,#D84315);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">In Maintenance</div><div class="sn">{{ maintenance_vehicles }}</div></div>
+        <div class="si"><i class="fas fa-wrench"></i></div>
+      </div>
+      <i class="fas fa-wrench bg-ico"></i>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#1B5E20,#2E7D32);">
+      <div class="d-flex justify-content-between align-items-start">
+        <div><div class="sl">Notifications</div><div class="sn">{{ unread_notifications }}</div></div>
+        <div class="si"><i class="fas fa-bell"></i></div>
+      </div>
+      <i class="fas fa-bell bg-ico"></i>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-header"><i class="fas fa-chart-pie me-2 text-primary"></i>Vehicle Status</div>
+      <div class="card-body d-flex align-items-center justify-content-center p-3">
+        <canvas id="statusChart" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-bell me-2 text-danger"></i>Recent Alerts</span>
+        <a href="{% url 'alert_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table mb-0">
+            <thead><tr><th>Vehicle</th><th>Type</th><th>Severity</th><th>Time</th><th>Action</th></tr></thead>
+            <tbody>
+            {% for a in recent_alerts %}
+            <tr>
+              <td><strong>{{ a.vehicle.vehicle_number }}</strong></td>
+              <td><span class="badge bg-secondary" style="font-size:11px;">{{ a.get_alert_type_display }}</span></td>
+              <td><span class="badge bg-{{ a.severity_color }}">{{ a.get_severity_display }}</span></td>
+              <td style="font-size:12px;color:#666;">{{ a.created_at|timesince }} ago</td>
+              <td><a href="{% url 'alert_resolve' a.pk %}" class="btn btn-sm btn-outline-success" style="font-size:11px;padding:2px 8px;">Resolve</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-4"><i class="fas fa-check-circle fa-2x mb-2 d-block text-success"></i>No active alerts</td></tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span><i class="fas fa-route me-2 text-primary"></i>Recent Trips</span>
+    <a href="{% url 'trip_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead><tr><th>#</th><th>Vehicle</th><th>Driver</th><th>From</th><th>To</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody>
+        {% for t in recent_trips %}
+        <tr>
+          <td>#{{ t.id }}</td>
+          <td><strong>{{ t.vehicle.vehicle_number }}</strong><br><small class="text-muted">{{ t.vehicle.name }}</small></td>
+          <td>{{ t.driver.get_full_name|default:t.driver.username|default:"—" }}</td>
+          <td>{{ t.start_location|truncatechars:22 }}</td>
+          <td>{{ t.end_location|truncatechars:22 }}</td>
+          <td><span class="badge bg-{{ t.status_color }} {% if t.status == 'scheduled' %}text-dark{% endif %}">{{ t.get_status_display }}</span></td>
+          <td style="font-size:12px;color:#666;">{{ t.scheduled_start|date:"d M Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center text-muted py-4">No trips yet</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const d = {{ chart_data|safe }};
+const ctx = document.getElementById('statusChart');
+if(ctx){new Chart(ctx,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:['#2E7D32','#F57F17','#C62828','#546E7A'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{padding:14,font:{size:12,weight:'700'}}}}  ,cutout:'62%'}});}
+</script>
+{% endblock %}

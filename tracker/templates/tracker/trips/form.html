@@ -1,0 +1,27 @@
+{% extends 'tracker/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-route me-2 text-primary"></i>{{ title }}</h1></div>
+  <a href="{% url 'trip_list' %}" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Back</a>
+</div>
+<div class="card"><div class="card-header"><i class="fas fa-edit me-2"></i>{{ title }}</div>
+<div class="card-body">
+  <form method="post">{% csrf_token %}
+    <div class="row g-3">
+      <div class="col-md-6"><label class="form-label">Vehicle *</label>{{ form.vehicle }}</div>
+      <div class="col-md-6"><label class="form-label">Driver</label>{{ form.driver }}</div>
+      <div class="col-md-6"><label class="form-label">From Location *</label>{{ form.start_location }}</div>
+      <div class="col-md-6"><label class="form-label">To Location *</label>{{ form.end_location }}</div>
+      <div class="col-md-6"><label class="form-label">Scheduled Start *</label>{{ form.scheduled_start }}</div>
+      <div class="col-md-6"><label class="form-label">Status</label>{{ form.status }}</div>
+      <div class="col-md-6"><label class="form-label">Purpose</label>{{ form.purpose }}</div>
+      <div class="col-12"><label class="form-label">Notes</label>{{ form.notes }}</div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save me-2"></i>Save Trip</button>
+        <a href="{% url 'trip_list' %}" class="btn btn-outline-secondary btn-lg ms-2">Cancel</a>
+      </div>
+    </div>
+  </form>
+</div></div>
+{% endblock %}

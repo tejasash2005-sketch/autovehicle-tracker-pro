@@ -1,0 +1,78 @@
+{% extends 'tracker/base.html' %}
+{% block title %}{{ vehicle.vehicle_number }}{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-car me-2 text-primary"></i>{{ vehicle.vehicle_number }}</h1>
+  <nav aria-label="breadcrumb"><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="{% url 'vehicle_list' %}">Vehicles</a></li><li class="breadcrumb-item active">{{ vehicle.name }}</li></ol></nav></div>
+  <div class="d-flex gap-2">
+    <a href="{% url 'live_tracking' %}" class="btn btn-primary btn-sm"><i class="fas fa-map-marker-alt me-1"></i>Track Live</a>
+    {% if request.user.is_superuser or request.user.userprofile.role == 'admin' %}<a href="{% url 'vehicle_edit' vehicle.pk %}" class="btn btn-warning btn-sm"><i class="fas fa-edit me-1"></i>Edit</a>{% endif %}
+  </div>
+</div>
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header"><i class="fas fa-info-circle me-2"></i>Vehicle Info</div>
+      <div class="card-body">
+        <div style="width:72px;height:72px;background:#E3F2FD;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:32px;color:#1565C0;margin-bottom:14px;"><i class="fas fa-car"></i></div>
+        <table class="table table-sm">
+          <tr><td style="color:#666;font-size:12.5px;">Status</td><td><span class="badge bg-{{ vehicle.status_color }}{% if vehicle.status == 'idle' %} text-dark{% endif %}">{{ vehicle.get_status_display }}</span></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Type</td><td><strong>{{ vehicle.get_vehicle_type_display }}</strong></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Make/Model</td><td><strong>{{ vehicle.make }} {{ vehicle.model }}</strong></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Year</td><td><strong>{{ vehicle.year }}</strong></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Color</td><td><strong>{{ vehicle.color }}</strong></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Fuel Type</td><td><strong>{{ vehicle.get_fuel_type_display }}</strong></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Fuel Level</td><td><strong>{{ vehicle.fuel_level }}%</strong></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Mileage</td><td><strong>{{ vehicle.mileage }} km</strong></td></tr>
+          <tr><td style="color:#666;font-size:12.5px;">Driver</td><td><strong>{{ vehicle.assigned_driver.get_full_name|default:"Unassigned" }}</strong></td></tr>
+          {% if vehicle.insurance_expiry %}<tr><td style="color:#666;font-size:12.5px;">Insurance</td><td><strong>{{ vehicle.insurance_expiry }}</strong></td></tr>{% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <ul class="nav nav-tabs mb-3" id="vTabs">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tripsTab"><i class="fas fa-route me-1"></i>Trips ({{ trips|length }})</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#alertsTab"><i class="fas fa-bell me-1"></i>Alerts ({{ alerts|length }})</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#maintTab"><i class="fas fa-tools me-1"></i>Maintenance</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#fuelTab"><i class="fas fa-gas-pump me-1"></i>Fuel</button></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="tripsTab">
+        <div class="card"><div class="card-body p-0"><table class="table mb-0"><thead><tr><th>#</th><th>From</th><th>To</th><th>Status</th><th>Date</th></tr></thead><tbody>
+        {% for t in trips %}<tr><td>#{{ t.id }}</td><td>{{ t.start_location|truncatechars:20 }}</td><td>{{ t.end_location|truncatechars:20 }}</td>
+        <td><span class="badge bg-{{ t.status_color }}{% if t.status == 'scheduled' %} text-dark{% endif %}">{{ t.get_status_display }}</span></td>
+        <td style="font-size:12px;">{{ t.scheduled_start|date:"d M Y" }}</td></tr>
+        {% empty %}<tr><td colspan="5" class="text-center py-3 text-muted">No trips</td></tr>{% endfor %}
+        </tbody></table></div></div>
+      </div>
+      <div class="tab-pane fade" id="alertsTab">
+        <div class="card"><div class="card-body p-0"><table class="table mb-0"><thead><tr><th>Type</th><th>Severity</th><th>Message</th><th>Time</th></tr></thead><tbody>
+        {% for a in alerts %}<tr>
+        <td><span class="badge bg-secondary" style="font-size:11px;">{{ a.get_alert_type_display }}</span></td>
+        <td><span class="badge bg-{{ a.severity_color }}">{{ a.get_severity_display }}</span></td>
+        <td style="font-size:13px;">{{ a.message|truncatechars:40 }}</td>
+        <td style="font-size:12px;color:#666;">{{ a.created_at|date:"d M H:i" }}</td></tr>
+        {% empty %}<tr><td colspan="4" class="text-center py-3 text-muted">No alerts</td></tr>{% endfor %}
+        </tbody></table></div></div>
+      </div>
+      <div class="tab-pane fade" id="maintTab">
+        <div class="card"><div class="card-body p-0"><table class="table mb-0"><thead><tr><th>Service</th><th>Date</th><th>Cost</th><th>Status</th></tr></thead><tbody>
+        {% for m in maintenance %}<tr>
+        <td>{{ m.get_service_type_display }}</td><td>{{ m.scheduled_date }}</td><td>&#8377;{{ m.cost }}</td>
+        <td><span class="badge bg-{{ m.status_color }}{% if m.status == 'scheduled' %} text-dark{% endif %}">{{ m.get_status_display }}</span></td></tr>
+        {% empty %}<tr><td colspan="4" class="text-center py-3 text-muted">No records</td></tr>{% endfor %}
+        </tbody></table></div></div>
+      </div>
+      <div class="tab-pane fade" id="fuelTab">
+        <div class="card"><div class="card-body p-0"><table class="table mb-0"><thead><tr><th>Date</th><th>Qty (L)</th><th>Cost</th><th>Station</th></tr></thead><tbody>
+        {% for fr in fuel_recs %}<tr>
+        <td>{{ fr.date|date:"d M Y" }}</td><td><strong>{{ fr.fuel_quantity }} L</strong></td><td>&#8377;{{ fr.fuel_cost }}</td>
+        <td style="font-size:13px;">{{ fr.station_name|default:"—" }}</td></tr>
+        {% empty %}<tr><td colspan="4" class="text-center py-3 text-muted">No records</td></tr>{% endfor %}
+        </tbody></table></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

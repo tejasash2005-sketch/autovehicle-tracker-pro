@@ -1,0 +1,30 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Maintenance{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-tools me-2 text-primary"></i>Maintenance Records</h1></div>
+  {% if request.user.is_superuser or request.user.userprofile.role == 'admin' %}<a href="{% url 'admin_maintenance' %}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add Record</a>{% endif %}
+</div>
+<div class="card"><div class="card-body p-0">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead><tr><th>Vehicle</th><th>Service Type</th><th>Center</th><th>Date</th><th>Cost</th><th>Status</th><th>Next Due</th></tr></thead>
+      <tbody>
+      {% for r in records %}
+      <tr>
+        <td><strong>{{ r.vehicle.vehicle_number }}</strong><br><small class="text-muted">{{ r.vehicle.name }}</small></td>
+        <td><span class="badge bg-secondary">{{ r.get_service_type_display }}</span></td>
+        <td style="font-size:13px;">{{ r.service_center|default:"—" }}</td>
+        <td style="font-size:13px;">{{ r.scheduled_date }}</td>
+        <td><strong>&#8377;{{ r.cost }}</strong></td>
+        <td><span class="badge bg-{{ r.status_color }}{% if r.status == 'scheduled' %} text-dark{% endif %}">{{ r.get_status_display }}</span></td>
+        <td style="font-size:13px;">{{ r.next_service_due|default:"—" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="text-center py-4 text-muted">No maintenance records</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div></div>
+{% endblock %}

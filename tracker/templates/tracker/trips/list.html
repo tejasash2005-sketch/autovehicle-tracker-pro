@@ -1,0 +1,51 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Trips{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-route me-2 text-primary"></i>Trips</h1></div>
+  <a href="{% url 'trip_create' %}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Schedule Trip</a>
+</div>
+<div class="card mb-3"><div class="card-body">
+  <form method="get" class="row g-2 align-items-end">
+    <div class="col-md-4"><select name="status" class="form-select"><option value="">All Status</option><option value="scheduled" {% if status == 'scheduled' %}selected{% endif %}>Scheduled</option><option value="ongoing" {% if status == 'ongoing' %}selected{% endif %}>Ongoing</option><option value="completed" {% if status == 'completed' %}selected{% endif %}>Completed</option><option value="cancelled" {% if status == 'cancelled' %}selected{% endif %}>Cancelled</option></select></div>
+    <div class="col-md-2"><button type="submit" class="btn btn-primary w-100">Filter</button></div>
+    <div class="col-md-2"><a href="{% url 'trip_list' %}" class="btn btn-outline-secondary w-100">Reset</a></div>
+  </form>
+</div></div>
+<div class="card">
+  <div class="card-header"><i class="fas fa-list me-2"></i>All Trips ({{ trips.paginator.count }})</div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead><tr><th>#</th><th>Vehicle</th><th>Driver</th><th>From</th><th>To</th><th>Scheduled</th><th>Status</th><th>Dist.</th><th></th></tr></thead>
+        <tbody>
+        {% for t in trips %}
+        <tr>
+          <td>#{{ t.id }}</td>
+          <td><strong>{{ t.vehicle.vehicle_number }}</strong><br><small class="text-muted">{{ t.vehicle.name }}</small></td>
+          <td style="font-size:13px;">{{ t.driver.get_full_name|default:t.driver.username|default:"—" }}</td>
+          <td style="font-size:13px;">{{ t.start_location|truncatechars:22 }}</td>
+          <td style="font-size:13px;">{{ t.end_location|truncatechars:22 }}</td>
+          <td style="font-size:12px;color:#666;">{{ t.scheduled_start|date:"d M Y H:i" }}</td>
+          <td><span class="badge bg-{{ t.status_color }}{% if t.status == 'scheduled' %} text-dark{% endif %}">{{ t.get_status_display }}</span></td>
+          <td style="font-size:13px;">{% if t.distance_km > 0 %}{{ t.distance_km }} km{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          <td><a href="{% url 'trip_detail' t.pk %}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9" class="text-center py-5 text-muted"><i class="fas fa-route fa-3x mb-3 d-block"></i>No trips found</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% if trips.has_other_pages %}
+  <div class="card-footer">
+    <nav><ul class="pagination pagination-sm mb-0 justify-content-center">
+      {% if trips.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ trips.previous_page_number }}&status={{ status }}">«</a></li>{% endif %}
+      {% for num in trips.paginator.page_range %}<li class="page-item {% if trips.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}&status={{ status }}">{{ num }}</a></li>{% endfor %}
+      {% if trips.has_next %}<li class="page-item"><a class="page-link" href="?page={{ trips.next_page_number }}&status={{ status }}">»</a></li>{% endif %}
+    </ul></nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

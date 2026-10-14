@@ -1,0 +1,59 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Pricing{% endblock %}
+{% block public_content %}
+<section style="background:linear-gradient(135deg,#0D47A1,#1565C0);padding:120px 0 60px;text-align:center;">
+  <div class="container">
+    <h1 style="font-family:'Poppins',sans-serif;font-size:44px;font-weight:800;color:#fff;">Simple Pricing</h1>
+    <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:480px;margin:12px auto 0;">All plans include a 30-day free trial. No credit card required.</p>
+  </div>
+</section>
+<section style="padding:70px 0;background:#F0F4F8;">
+  <div class="container">
+    <div class="row g-4 justify-content-center align-items-stretch">
+      <div class="col-lg-4"><div style="background:#fff;border-radius:18px;padding:36px;height:100%;box-shadow:0 4px 18px rgba(0,0,0,.06);">
+        <div style="font-size:12.5px;font-weight:800;text-transform:uppercase;color:#888;margin-bottom:8px;">Starter</div>
+        <div style="font-size:44px;font-weight:800;color:#1A1A2E;">&#8377;999<span style="font-size:15px;font-weight:400;color:#888;">/month</span></div>
+        <div style="color:#888;font-size:13.5px;margin-bottom:20px;">Up to 10 vehicles</div>
+        <hr>
+        <ul style="list-style:none;padding:0;margin:18px 0;font-size:13.5px;">
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>Real-time GPS tracking</li>
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>Basic alerts</li>
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>Trip management</li>
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>Fuel tracking</li>
+          <li class="py-1 text-muted"><i class="fas fa-times-circle me-2"></i>Advanced analytics</li>
+        </ul>
+        <a href="{% url 'register' %}" class="btn btn-outline-primary w-100 btn-lg" style="border-radius:10px;">Get Started</a>
+      </div></div>
+      <div class="col-lg-4"><div style="background:linear-gradient(135deg,#1565C0,#0D47A1);border-radius:18px;padding:36px;height:100%;box-shadow:0 12px 40px rgba(21,101,192,.35);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:14px;right:14px;background:#FF6F00;color:#fff;font-size:11px;font-weight:800;padding:5px 13px;border-radius:20px;">Most Popular</div>
+        <div style="font-size:12.5px;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:8px;">Professional</div>
+        <div style="font-size:44px;font-weight:800;color:#fff;">&#8377;2,499<span style="font-size:15px;font-weight:400;color:rgba(255,255,255,.7);">/month</span></div>
+        <div style="color:rgba(255,255,255,.7);font-size:13.5px;margin-bottom:20px;">Up to 50 vehicles</div>
+        <hr style="border-color:rgba(255,255,255,.2);">
+        <ul style="list-style:none;padding:0;margin:18px 0;font-size:13.5px;">
+          <li class="py-1" style="color:rgba(255,255,255,.9);"><i class="fas fa-check-circle me-2" style="color:#69F0AE;"></i>Everything in Starter</li>
+          <li class="py-1" style="color:rgba(255,255,255,.9);"><i class="fas fa-check-circle me-2" style="color:#69F0AE;"></i>All 8 alert types</li>
+          <li class="py-1" style="color:rgba(255,255,255,.9);"><i class="fas fa-check-circle me-2" style="color:#69F0AE;"></i>Geofencing</li>
+          <li class="py-1" style="color:rgba(255,255,255,.9);"><i class="fas fa-check-circle me-2" style="color:#69F0AE;"></i>Maintenance scheduling</li>
+          <li class="py-1" style="color:rgba(255,255,255,.9);"><i class="fas fa-check-circle me-2" style="color:#69F0AE;"></i>Advanced analytics</li>
+        </ul>
+        <a href="{% url 'register' %}" class="btn w-100 btn-lg" style="background:#FF6F00;color:#fff;border:none;border-radius:10px;font-weight:800;">Start Free Trial</a>
+      </div></div>
+      <div class="col-lg-4"><div style="background:#fff;border-radius:18px;padding:36px;height:100%;box-shadow:0 4px 18px rgba(0,0,0,.06);">
+        <div style="font-size:12.5px;font-weight:800;text-transform:uppercase;color:#888;margin-bottom:8px;">Enterprise</div>
+        <div style="font-size:44px;font-weight:800;color:#1A1A2E;">Custom</div>
+        <div style="color:#888;font-size:13.5px;margin-bottom:20px;">Unlimited vehicles</div>
+        <hr>
+        <ul style="list-style:none;padding:0;margin:18px 0;font-size:13.5px;">
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>Everything in Professional</li>
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>Full REST API</li>
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>White-label option</li>
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>Dedicated account manager</li>
+          <li class="py-1"><i class="fas fa-check-circle text-success me-2"></i>On-premise deployment</li>
+        </ul>
+        <a href="{% url 'contact' %}" class="btn btn-outline-secondary w-100 btn-lg" style="border-radius:10px;">Contact Sales</a>
+      </div></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

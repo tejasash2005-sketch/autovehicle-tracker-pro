@@ -1,0 +1,58 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Geofences{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>{% endblock %}
+{% block content %}
+<div class="ph"><div><h1><i class="fas fa-draw-polygon me-2 text-primary"></i>Geofence Management</h1></div></div>
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card"><div class="card-header"><i class="fas fa-plus me-2"></i>Create Geofence</div>
+    <div class="card-body">
+      <form method="post">{% csrf_token %}
+        <div class="mb-3"><label class="form-label">Name *</label>{{ form.name }}</div>
+        <div class="mb-3"><label class="form-label">Description</label>{{ form.description }}</div>
+        <div class="row g-2 mb-3">
+          <div class="col-6"><label class="form-label">Latitude</label>{{ form.center_latitude }}</div>
+          <div class="col-6"><label class="form-label">Longitude</label>{{ form.center_longitude }}</div>
+        </div>
+        <div class="mb-3"><label class="form-label">Radius (metres)</label>{{ form.radius }}</div>
+        <div class="mb-3"><label class="form-label">Assign Vehicles</label>{{ form.vehicles }}</div>
+        <div class="mb-3 d-flex gap-3">
+          <div class="form-check">{{ form.alert_on_entry }}<label class="form-check-label ms-1">Alert on Entry</label></div>
+          <div class="form-check">{{ form.alert_on_exit }}<label class="form-check-label ms-1">Alert on Exit</label></div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save me-2"></i>Create Geofence</button>
+      </form>
+    </div></div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card mb-3"><div class="card-header"><i class="fas fa-map me-2"></i>Map Preview</div>
+      <div class="card-body p-0"><div id="gmap" style="height:260px;border-radius:0 0 12px 12px;"></div></div>
+    </div>
+    <div class="card"><div class="card-header"><i class="fas fa-list me-2"></i>All Geofences ({{ geofences.count }})</div>
+      <div class="card-body p-0">
+        <table class="table mb-0"><thead><tr><th>Name</th><th>Radius</th><th>Vehicles</th><th>Alerts</th><th>Active</th></tr></thead><tbody>
+        {% for g in geofences %}<tr>
+          <td><strong>{{ g.name }}</strong><br><small class="text-muted">{{ g.description|truncatechars:30 }}</small></td>
+          <td>{{ g.radius }} m</td>
+          <td>{{ g.vehicles.count }}</td>
+          <td>{% if g.alert_on_entry %}<span class="badge bg-warning text-dark me-1">Entry</span>{% endif %}{% if g.alert_on_exit %}<span class="badge bg-danger me-1">Exit</span>{% endif %}</td>
+          <td>{% if g.is_active %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}</td>
+        </tr>{% empty %}
+        <tr><td colspan="5" class="text-center py-3 text-muted">No geofences yet</td></tr>
+        {% endfor %}
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const gmap = L.map('gmap').setView([12.9716,77.5946],11);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(gmap);
+{% for g in geofences %}
+L.circle([{{ g.center_latitude }},{{ g.center_longitude }}],{radius:{{ g.radius }},color:'#1565C0',fillColor:'#1565C0',fillOpacity:.15,weight:2}).addTo(gmap).bindPopup('<strong>{{ g.name }}</strong><br>Radius: {{ g.radius }}m');
+{% endfor %}
+</script>
+{% endblock %}

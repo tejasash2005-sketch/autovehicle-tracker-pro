@@ -1,0 +1,134 @@
+{% extends 'tracker/base.html' %}
+{% block title %}AutoVehicle Tracker Pro{% endblock %}
+{% block public_content %}
+<section style="background:linear-gradient(135deg,#0D47A1,#1565C0,#00ACC1);min-height:100vh;padding-top:64px;display:flex;align-items:center;">
+  <div class="container py-5">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span style="background:rgba(255,111,0,.9);color:#fff;font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px;display:inline-block;margin-bottom:18px;">
+          <i class="fas fa-satellite me-2"></i>LIVE GPS TRACKING SYSTEM
+        </span>
+        <h1 style="font-family:'Poppins',sans-serif;font-size:50px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:20px;">
+          Track Every<br><span style="color:#FFD740;">Vehicle</span><br>In Real-Time
+        </h1>
+        <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:480px;line-height:1.7;margin-bottom:28px;">
+          India's most powerful fleet management platform. Monitor vehicles, manage drivers, track fuel, and get instant alerts — all from one dashboard.
+        </p>
+        <div class="d-flex gap-3 flex-wrap mb-4">
+          <a href="{% url 'register' %}" style="background:#FF6F00;color:#fff;border:none;padding:13px 30px;font-size:15px;border-radius:10px;font-weight:800;text-decoration:none;display:inline-block;">
+            <i class="fas fa-rocket me-2"></i>Get Started Free
+          </a>
+          <a href="{% url 'login' %}" style="background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);padding:13px 30px;font-size:15px;border-radius:10px;font-weight:700;text-decoration:none;display:inline-block;backdrop-filter:blur(8px);">
+            <i class="fas fa-sign-in-alt me-2"></i>Login
+          </a>
+        </div>
+        <div class="d-flex gap-4">
+          <div style="color:rgba(255,255,255,.9);">
+            <div style="font-size:26px;font-weight:800;color:#FFD740;">{{ stats.total_vehicles }}+</div>
+            <div style="font-size:12px;">Vehicles Tracked</div>
+          </div>
+          <div style="color:rgba(255,255,255,.9);">
+            <div style="font-size:26px;font-weight:800;color:#FFD740;">{{ stats.total_trips }}+</div>
+            <div style="font-size:12px;">Trips Completed</div>
+          </div>
+          <div style="color:rgba(255,255,255,.9);">
+            <div style="font-size:26px;font-weight:800;color:#FFD740;">{{ stats.total_drivers }}+</div>
+            <div style="font-size:12px;">Active Drivers</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <div style="background:#fff;border-radius:20px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.3);transform:rotate(-2deg);max-width:440px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#1565C0,#00ACC1);border-radius:12px;height:160px;display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:16px;position:relative;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 20px,rgba(255,255,255,.05) 20px,rgba(255,255,255,.05) 21px),repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(255,255,255,.05) 20px,rgba(255,255,255,.05) 21px);"></div>
+            <div style="text-align:center;z-index:1;">
+              <i class="fas fa-map-marked-alt" style="font-size:42px;margin-bottom:8px;display:block;"></i>
+              <div style="font-weight:800;font-size:15px;">Live Map Tracking</div>
+              <div style="font-size:12px;opacity:.8;">{{ stats.active_vehicles }} vehicles active now</div>
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col-4"><div style="background:#E3F2FD;border-radius:8px;padding:10px;text-align:center;">
+              <i class="fas fa-car" style="color:#1565C0;font-size:18px;"></i>
+              <div style="font-size:20px;font-weight:800;color:#1565C0;">{{ stats.total_vehicles }}</div>
+              <div style="font-size:10px;color:#666;">Vehicles</div>
+            </div></div>
+            <div class="col-4"><div style="background:#E8F5E9;border-radius:8px;padding:10px;text-align:center;">
+              <i class="fas fa-route" style="color:#2E7D32;font-size:18px;"></i>
+              <div style="font-size:20px;font-weight:800;color:#2E7D32;">{{ stats.total_trips }}</div>
+              <div style="font-size:10px;color:#666;">Trips</div>
+            </div></div>
+            <div class="col-4"><div style="background:#FFF3E0;border-radius:8px;padding:10px;text-align:center;">
+              <i class="fas fa-users" style="color:#E65100;font-size:18px;"></i>
+              <div style="font-size:20px;font-weight:800;color:#E65100;">{{ stats.total_drivers }}</div>
+              <div style="font-size:10px;color:#666;">Drivers</div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:70px 0;background:#fff;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 style="font-family:'Poppins',sans-serif;font-size:34px;font-weight:800;color:#1A1A2E;">Everything Your Fleet Needs</h2>
+      <p class="text-muted">Complete fleet management solution designed for Indian businesses</p>
+    </div>
+    <div class="row g-4">
+      {% for ico,bg,col,title,desc in features %}{% endfor %}
+      <div class="col-md-4"><div style="border-radius:14px;padding:28px;border:2px solid #E3F2FD;text-align:center;transition:.3s;" onmouseover="this.style.borderColor='#1565C0';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#E3F2FD';this.style.transform='none'">
+        <div style="width:66px;height:66px;background:#E3F2FD;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;color:#1565C0;"><i class="fas fa-map-marked-alt"></i></div>
+        <h5 style="font-weight:800;">Real-Time GPS Tracking</h5>
+        <p class="text-muted" style="font-size:13.5px;">Track every vehicle live on an interactive map with speed and route history.</p>
+      </div></div>
+      <div class="col-md-4"><div style="border-radius:14px;padding:28px;border:2px solid #FFF3E0;text-align:center;transition:.3s;" onmouseover="this.style.borderColor='#E65100';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#FFF3E0';this.style.transform='none'">
+        <div style="width:66px;height:66px;background:#FFF3E0;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;color:#E65100;"><i class="fas fa-bell"></i></div>
+        <h5 style="font-weight:800;">Smart Alert System</h5>
+        <p class="text-muted" style="font-size:13.5px;">Instant notifications for speed violations, geofence breaches and emergencies.</p>
+      </div></div>
+      <div class="col-md-4"><div style="border-radius:14px;padding:28px;border:2px solid #E8F5E9;text-align:center;transition:.3s;" onmouseover="this.style.borderColor='#2E7D32';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#E8F5E9';this.style.transform='none'">
+        <div style="width:66px;height:66px;background:#E8F5E9;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;color:#2E7D32;"><i class="fas fa-gas-pump"></i></div>
+        <h5 style="font-weight:800;">Fuel Management</h5>
+        <p class="text-muted" style="font-size:13.5px;">Track fuel consumption, detect theft, and optimise costs across your fleet.</p>
+      </div></div>
+      <div class="col-md-4"><div style="border-radius:14px;padding:28px;border:2px solid #EDE7F6;text-align:center;transition:.3s;" onmouseover="this.style.borderColor='#6A1B9A';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#EDE7F6';this.style.transform='none'">
+        <div style="width:66px;height:66px;background:#EDE7F6;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;color:#6A1B9A;"><i class="fas fa-tools"></i></div>
+        <h5 style="font-weight:800;">Maintenance Scheduling</h5>
+        <p class="text-muted" style="font-size:13.5px;">Never miss a service. Auto-schedule and track all maintenance tasks.</p>
+      </div></div>
+      <div class="col-md-4"><div style="border-radius:14px;padding:28px;border:2px solid #E0F7FA;text-align:center;transition:.3s;" onmouseover="this.style.borderColor='#006064';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#E0F7FA';this.style.transform='none'">
+        <div style="width:66px;height:66px;background:#E0F7FA;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;color:#006064;"><i class="fas fa-chart-line"></i></div>
+        <h5 style="font-weight:800;">Advanced Analytics</h5>
+        <p class="text-muted" style="font-size:13.5px;">Powerful reports and dashboards for data-driven fleet decisions.</p>
+      </div></div>
+      <div class="col-md-4"><div style="border-radius:14px;padding:28px;border:2px solid #FCE4EC;text-align:center;transition:.3s;" onmouseover="this.style.borderColor='#880E4F';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#FCE4EC';this.style.transform='none'">
+        <div style="width:66px;height:66px;background:#FCE4EC;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px;color:#880E4F;"><i class="fas fa-draw-polygon"></i></div>
+        <h5 style="font-weight:800;">Geofence Zones</h5>
+        <p class="text-muted" style="font-size:13.5px;">Define virtual zones and get alerts when vehicles enter or exit.</p>
+      </div></div>
+    </div>
+    <div class="text-center mt-5">
+      <a href="{% url 'register' %}" class="btn btn-primary btn-lg" style="padding:13px 38px;font-size:15px;border-radius:10px;">
+        <i class="fas fa-rocket me-2"></i>Start Tracking Today — It's Free
+      </a>
+    </div>
+  </div>
+</section>
+
+<section style="background:linear-gradient(135deg,#0D47A1,#00ACC1);padding:70px 0;text-align:center;">
+  <div class="container">
+    <h2 style="font-family:'Poppins',sans-serif;font-size:38px;font-weight:800;color:#fff;margin-bottom:14px;">Ready to Transform Your Fleet?</h2>
+    <p style="color:rgba(255,255,255,.85);font-size:17px;max-width:480px;margin:0 auto 28px;">Join thousands of businesses across India using AutoVehicle Tracker Pro.</p>
+    <div class="d-flex gap-3 justify-content-center">
+      <a href="{% url 'register' %}" style="background:#FF6F00;color:#fff;border:none;padding:13px 34px;font-size:15px;border-radius:10px;font-weight:800;text-decoration:none;display:inline-block;">
+        <i class="fas fa-user-plus me-2"></i>Register Now — Free
+      </a>
+      <a href="{% url 'contact' %}" style="background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);padding:13px 34px;font-size:15px;border-radius:10px;font-weight:700;text-decoration:none;display:inline-block;">
+        <i class="fas fa-phone me-2"></i>Contact Sales
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

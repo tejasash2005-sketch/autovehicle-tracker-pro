@@ -1,0 +1,54 @@
+{% extends 'tracker/base.html' %}
+{% block title %}Alerts{% endblock %}
+{% block content %}
+<div class="ph">
+  <div><h1><i class="fas fa-bell me-2 text-danger"></i>Alerts</h1></div>
+  {% if unread_count > 0 %}<span class="badge bg-danger" style="font-size:13px;padding:9px 16px;">{{ unread_count }} Unread</span>{% endif %}
+</div>
+<div class="card mb-3"><div class="card-body">
+  <form method="get" class="row g-2 align-items-end">
+    <div class="col-md-4"><select name="severity" class="form-select"><option value="">All Severity</option><option value="low" {% if severity == 'low' %}selected{% endif %}>Low</option><option value="medium" {% if severity == 'medium' %}selected{% endif %}>Medium</option><option value="high" {% if severity == 'high' %}selected{% endif %}>High</option><option value="critical" {% if severity == 'critical' %}selected{% endif %}>Critical</option></select></div>
+    <div class="col-md-2"><button type="submit" class="btn btn-primary w-100">Filter</button></div>
+    <div class="col-md-2"><a href="{% url 'alert_list' %}" class="btn btn-outline-secondary w-100">Reset</a></div>
+  </form>
+</div></div>
+<div class="card">
+  <div class="card-header"><i class="fas fa-list me-2"></i>All Alerts ({{ alerts.paginator.count }})</div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead><tr><th>Vehicle</th><th>Type</th><th>Severity</th><th>Message</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for a in alerts %}
+        <tr style="{% if not a.is_read %}background:#FFFDE7;{% endif %}">
+          <td><strong>{{ a.vehicle.vehicle_number }}</strong></td>
+          <td><span class="badge bg-secondary" style="font-size:11px;">{{ a.get_alert_type_display }}</span></td>
+          <td><span class="badge bg-{{ a.severity_color }}">{{ a.get_severity_display }}</span></td>
+          <td style="font-size:13px;max-width:240px;">{{ a.message|truncatechars:55 }}</td>
+          <td>{% if a.is_resolved %}<span class="badge bg-success">Resolved</span>{% elif a.is_read %}<span class="badge bg-secondary">Read</span>{% else %}<span class="badge bg-danger">New</span>{% endif %}</td>
+          <td style="font-size:12px;color:#666;">{{ a.created_at|date:"d M Y H:i" }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              {% if not a.is_read %}<a href="{% url 'alert_mark_read' a.pk %}" class="btn btn-sm btn-outline-secondary" style="font-size:11px;padding:2px 8px;">Read</a>{% endif %}
+              {% if not a.is_resolved %}<a href="{% url 'alert_resolve' a.pk %}" class="btn btn-sm btn-outline-success" style="font-size:11px;padding:2px 8px;">Resolve</a>{% endif %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" class="text-center py-5 text-muted"><i class="fas fa-check-circle fa-3x mb-3 d-block text-success"></i>No alerts found</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% if alerts.has_other_pages %}
+  <div class="card-footer">
+    <nav><ul class="pagination pagination-sm mb-0 justify-content-center">
+      {% if alerts.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ alerts.previous_page_number }}">«</a></li>{% endif %}
+      {% for num in alerts.paginator.page_range %}<li class="page-item {% if alerts.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>{% endfor %}
+      {% if alerts.has_next %}<li class="page-item"><a class="page-link" href="?page={{ alerts.next_page_number }}">»</a></li>{% endif %}
+    </ul></nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
