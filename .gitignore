@@ -218,3 +218,23 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Django collected static files
+staticfiles/
+
+# User uploads (keep the folders, ignore the files)
+media/*
+!media/.gitkeep
+
+# Extra env files (keep a template)
+.env.*
+!.env.example
+
+# IDEs / editors
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
