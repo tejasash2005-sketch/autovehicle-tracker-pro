@@ -1,63 +1,130 @@
-# AutoVehicle Tracker Pro
+# 🚗 AutoVehicle Tracker Pro
 
-Full-stack Django fleet management and GPS tracking system.
+A full-stack **fleet management and GPS vehicle tracking system** built with Django. It combines a public marketing site, a role-based user portal, and a complete admin panel for managing vehicles, drivers, trips, alerts, geofences, maintenance and fuel.
 
-## Quick Start
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-4.2-092E20?logo=django&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap&logoColor=white)
+![Leaflet](https://img.shields.io/badge/Leaflet.js-Maps-199900?logo=leaflet&logoColor=white)
+![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?logo=sqlite&logoColor=white)
 
-### Windows
-```
-Double-click  run.bat
-```
+## ✨ Features
 
-### Linux / Mac
+- **Live tracking** – real-time vehicle positions on an interactive Leaflet.js map
+- **Fleet management** – vehicles, drivers, trips with full detail pages
+- **Alerts & geofencing** – create geofences, raise, read and resolve alerts
+- **Maintenance & fuel** – service history and fuel consumption records
+- **Reports & notifications** – generate reports, in-app notification center
+- **Role-based access** – Admin, Manager, User and Driver roles
+- **Admin panel** – 10 dedicated management modules
+- **Public site** – Home, Features, Pricing, About, Contact, Login and Register
+- **Sample data** – one command seeds users, vehicles, trips, alerts and more
+
+## 🧰 Tech Stack
+
+| Layer     | Technology                                              |
+|-----------|---------------------------------------------------------|
+| Backend   | Django 4.2, Python 3.10+                                |
+| Database  | SQLite (default, easy to swap for PostgreSQL/MySQL)     |
+| Frontend  | Django templates, Bootstrap 5, Leaflet.js               |
+| Forms     | django-crispy-forms, crispy-bootstrap5, widget-tweaks   |
+| Media     | Pillow (vehicle, driver and profile images)             |
+
+## 🚀 Getting Started
+
+### Quick start
+
+**Windows:** double-click `run.bat`
+
+**Linux / macOS:**
 ```bash
 chmod +x run.sh
 ./run.sh
 ```
 
-### Manual
+The script installs dependencies, runs migrations, seeds sample data and starts the server.
+
+### Manual setup
+
 ```bash
-pip install Django Pillow django-crispy-forms crispy-bootstrap5 django-widget-tweaks
-python manage.py makemigrations
+# 1. Clone the repository
+git clone https://github.com/<your-username>/autovehicle-tracker-pro.git
+cd autovehicle-tracker-pro
+
+# 2. Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Set up the database
+python manage.py makemigrations tracker
 python manage.py migrate
+
+# 5. Load sample data
 python manage.py seed_data
+
+# 6. Run the server
 python manage.py runserver
 ```
 
-Open: **http://127.0.0.1:8000**
+Open **http://127.0.0.1:8000** in your browser.
 
-## Login Credentials
+## 🔑 Demo Credentials
 
-| Role    | Username | Password   |
-|---------|----------|------------|
-| Admin   | admin    | admin123   |
-| User    | user1    | user123    |
-| Manager | user2    | user123    |
-| Driver  | driver1  | driver123  |
+| Role    | Username  | Password    |
+|---------|-----------|-------------|
+| Admin   | `admin`   | `admin123`  |
+| User    | `user1`   | `user123`   |
+| Manager | `user2`   | `user123`   |
+| Driver  | `driver1` | `driver123` |
 
-## User Modules (10)
-1. Dashboard  
-2. Vehicles  
-3. Live Tracking (Leaflet.js map)  
-4. Trips  
-5. Alerts  
-6. Maintenance  
-7. Fuel Records  
-8. Reports  
-9. Notifications  
-10. Profile  
+> ⚠️ These are demo accounts created by `seed_data`. Remove or change them before any real deployment.
 
-## Admin Modules (10)
-1. Admin Dashboard  
-2. User Management  
-3. Vehicle Management  
-4. Driver Management  
-5. Trip Management  
-6. Alert Management  
-7. Geofence Management  
-8. Maintenance Management  
-9. Fuel Management  
-10. Contact Messages  
+## 📦 Modules
 
-## Public Pages
-Home, Features, Pricing, About, Contact — all with Login/Register buttons in topbar.
+**User portal (10):** Dashboard · Vehicles · Live Tracking · Trips · Alerts · Maintenance · Fuel Records · Reports · Notifications · Profile
+
+**Admin panel (10):** Dashboard · Users · Vehicles · Drivers · Trips · Alerts · Geofences · Maintenance · Fuel · Contact Messages
+
+## 📁 Project Structure
+
+```
+├── manage.py
+├── requirements.txt
+├── run.sh / run.bat              # one-click setup scripts
+├── vehicle_tracker/              # project settings, urls, wsgi
+└── tracker/                      # main app
+    ├── models.py                 # UserProfile, Vehicle, Driver, Trip, Geofence,
+    │                             # Alert, MaintenanceRecord, FuelRecord,
+    │                             # Report, Notification, Contact
+    ├── views.py / urls.py / forms.py / admin.py
+    ├── management/commands/seed_data.py
+    └── templates/tracker/        # public, user, and admin-panel templates
+```
+
+## 🔌 API
+
+| Endpoint                      | Description                          |
+|-------------------------------|--------------------------------------|
+| `GET /api/vehicle-locations/` | Current vehicle positions (for map)  |
+
+## 🔒 Before Deploying to Production
+
+- Move `SECRET_KEY` to an environment variable and generate a new one
+- Set `DEBUG = False` and restrict `ALLOWED_HOSTS`
+- Remove the seeded demo accounts
+- Switch to PostgreSQL/MySQL and serve with Gunicorn + Nginx
+- Run `python manage.py collectstatic`
+
+## 🛣️ Roadmap
+
+- [ ] Real GPS device / MQTT integration
+- [ ] REST API with token authentication
+- [ ] Email and SMS alerts
+- [ ] Docker setup
+
+## 📄 License
+
+Released under the [MIT License](LICENSE).
